@@ -1,26 +1,31 @@
 package tudelft.caesarshift;
 
+
 public class CaesarShiftCipher {
 
-    public String CaesarShiftCipher(String message, int shift){
+    public String encode(String message, int shift) {
         StringBuilder sb = new StringBuilder();
-        char currentChar;
-        int length = message.length();
 
-        shift = shift%26;
+        shift = shift % 26; // normalize shift
 
-        for(int i = 0; i < length; i++){
-            currentChar = message.charAt(i);
-           
-            sb.append(currentChar);
-            if (currentChar > 'z' || currentChar < 'a') {
+        for (int i = 0; i < message.length(); i++) {
+            char currentChar = message.charAt(i);
+
+            // Only allow lowercase a-z
+            if (currentChar < 'a' || currentChar > 'z') {
                 return "invalid";
-            } else if ((char) (currentChar + shift) > 'z') {
-                currentChar = (char) (currentChar - 26);
-            } else if ((char) (currentChar + shift) < 'a'){
-                currentChar = (char) (currentChar + 26);
             }
-            sb.append((char) (currentChar + shift));
+
+            // Shift and wrap around
+            char shifted = (char)(currentChar + shift);
+
+            if (shifted > 'z') {
+                shifted -= 26;
+            } else if (shifted < 'a') {
+                shifted += 26;
+            }
+
+            sb.append(shifted);
         }
 
         return sb.toString();
